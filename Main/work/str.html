@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cozmoh Pixel</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        @font-face {
+            font-family: 'Future-earth';
+            src: url('https://cozmohpixel.com/pixel/fonts/future-earth.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        .parallax-container {
+            position: relative;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .parallax {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            will-change: transform;
+        }
+
+        .parallax-back {
+            background-image: url('https://cozmohpixel.com/pixel/assets/purple_bg.png');
+        }
+
+        .parallax-front {
+            background-image: url('https://cozmohpixel.com/pixel/assets/mountains.png');
+            transform: translateZ(-0.1px) scale(1.2);
+            z-index: 30;
+        }
+
+        .parallax-moon {
+            background-image: url('https://cozmohpixel.com/pixel/assets/glow-moon.png');
+        }
+
+        .parallax-clouds {
+            background-image: url('https://cozmohpixel.com/pixel/assets/clouds.png');
+        }
+
+        .overlay {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+            color: white;
+            height: 100%;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        .hero-text {
+            font-family: 'Future-earth', sans-serif;
+            font-size: 13vh;
+            font-weight: 800;
+            line-height: 0.9;
+        }
+
+        .description-text {
+            font-size: 3vh;
+        }
+
+        .cards-list {
+            z-index: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .card {
+            width: 200px;
+            height: 200px;
+            margin: 30px;
+            border-radius: 40px;
+            box-shadow: 5px 5px 30px 7px rgba(0, 0, 0, 0.25), -5px -5px 30px 7px rgba(0, 0, 0, 0.22);
+            cursor: pointer;
+            transition: 0.4s;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .card .card_image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 40px;
+        }
+
+        .card_title {
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 8px 0;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            border-radius: 0 0 40px 40px;
+            font-family: sans-serif;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .card:hover {
+            transform: scale(0.9);
+            box-shadow: 5px 5px 30px 15px rgba(0, 0, 0, 0.25), -5px -5px 30px 15px rgba(0, 0, 0, 0.22);
+        }
+
+        .game-section {
+            width: 100%;
+            height: 500px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transform: rotate(-13deg);
+            transform-origin: top left;
+            position: relative;
+            top: 10em;
+            margin-top: 50px;
+        }
+
+        .scrolling-container {
+            display: flex;
+            overflow-x: hidden;
+            white-space: nowrap;
+            width: 100vw;
+            cursor: grab;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .scrolling-content {
+            display: flex;
+            animation: scroll 40s linear infinite;
+            width: 200%;
+        }
+
+        .item {
+            margin: 0 15px;
+            width: 200px;
+            height: 200px;
+            display: flex;
+            align-items: flex-end;
+            background: #343434 no-repeat center center / cover;
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+            transition: all 0.4s ease-in-out;
+            cursor: pointer;
+        }
+
+        .item.active {
+            width: 250px;
+            box-shadow: 12px 40px 40px rgba(0, 0, 0, 0.25);
+        }
+
+        .item:after {
+            content: "";
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            left: 0;
+            top: 0;
+            background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1));
+        }
+
+        @keyframes scroll {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        @media all and (max-width: 768px) {
+            .cards-list {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .card {
+                margin: 20px 0;
+            }
+
+            .game-section {
+                top: 0;
+                margin-top: 20px;
+                height: auto;
+                transform: none;
+                overflow: hidden;
+                padding: 20px 0;
+            }
+
+            .scrolling-container {
+                width: auto;
+                overflow-x: hidden !important;
+                scrollbar-width: none;
+                -ms-overflow-style: none;
+            }
+
+            .scrolling-container::-webkit-scrollbar {
+                display: none;
+            }
+        }
+
+        .container {
+            text-align: center;
+            max-width: 1200px;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            padding: 40px;
+            margin: 20px auto;
+        }
+
+        .text-section {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .image-section {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .image-section img {
+            width: 50%;
+            max-width: 300px;
+            position: absolute;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .image-section img:nth-child(2) {
+            left: 50px;
+            animation-delay: 1s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #000;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Hero Section -->
+    <section class="parallax-container">
+        <div class="parallax parallax-back"></div>
+        <div class="parallax parallax-moon"></div>
+        <div class="parallax parallax-clouds"></div>
+        <div class="parallax parallax-front"></div>
+        <div class="overlay">
+            <h1 class="hero-text">Website<br>DEVELOPMENT</h1>
+            <p class="description-text">Technology made accessible to Businesses</p>
+        </div>
+    </section>
+
+    <!-- Cards Section -->
+    <div class="cards-list">
+        <div class="card">
+            <div class="card_image">
+                <img src="https://cozmohpixel.com/pixel/assets/img1.jpg" alt="Card Image">
+            </div>
+            <div class="card_title">Product<br>Design</div>
+        </div>
+        <div class="card">
+            <div class="card_image">
+                <img src="https://cozmohpixel.com/pixel/assets/img2.jpg" alt="Card Image">
+            </div>
+            <div class="card_title">User<br>Experience</div>
+        </div>
+        <div class="card">
+            <div class="card_image">
+                <img src="https://cozmohpixel.com/pixel/assets/img3.jpg" alt="Card Image">
+            </div>
+            <div class="card_title">Brand<br>Identity</div>
+        </div>
+        <div class="card">
+            <div class="card_image">
+                <img src="https://cozmohpixel.com/pixel/assets/img4.jpg" alt="Card Image">
+            </div>
+            <div class="card_title">Website<br>Development</div>
+        </div>
+    </div>
+
+    <!-- Game Section -->
+    <section class="game-section">
+        <div class="scrolling-container">
+            <div class="scrolling-content">
+                <div class="item"></div>
+                <div class="item"></div>
+                <div class="item"></div>
+                <div class="item"></div>
+                <div class="item"></div>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>
